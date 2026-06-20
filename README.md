@@ -73,12 +73,6 @@ Manages all schematic objects and dropped items based on each player's distance.
 
 ---
 
-## License
-
-All rights reserved. Unauthorized redistribution or modification is prohibited.
-
----
-
 <p align="center">
   Made by <strong>Souin</strong>
 </p>
