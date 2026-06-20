@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LangVersion>12</LangVersion>
+    <TargetFramework>net48</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>MerOptimizer</AssemblyName>
+    <RootNamespace>MerOptimizer</RootNamespace>
+    <!--
+      SL_REFERENCES must point to your folder containing game DLLs.
+      You can override this via the environment variable or pass it on the CLI:
+        dotnet build /p:SL_REFERENCES="C:\path\to\dlls"
+    -->
+    <SL_REFERENCES Condition="'$(SL_REFERENCES)'==''">C:\Users\musta\OneDrive\Desktop\indirilenler\Master</SL_REFERENCES>
+  </PropertyGroup>
+
+  <!-- ──────────────── Game + LabAPI references ──────────────── -->
+  <ItemGroup>
+    <Reference Include="UnityEngine"
+               HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
+    <Reference Include="UnityEngine.CoreModule"
+               HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
+    <Reference Include="UnityEngine.PhysicsModule"
+               HintPath="$(SL_REFERENCES)\UnityEngine.PhysicsModule.dll" />
+    <Reference Include="UnityEngine.AnimationModule"
+               HintPath="$(SL_REFERENCES)\UnityEngine.AnimationModule.dll" />
+    <Reference Include="Mirror"
+               HintPath="$(SL_REFERENCES)\Mirror.dll" />
+    <Reference Include="Assembly-CSharp"
+               HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
+    <Reference Include="Assembly-CSharp-firstpass"
+               HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" />
+    <Reference Include="LabApi"
+               HintPath="$(SL_REFERENCES)\LabApi.dll" />
+    <Reference Include="YamlDotNet"
+               HintPath="$(SL_REFERENCES)\YamlDotNet.dll" />
+    <Reference Include="NorthwoodLib"
+               HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
+    <Reference Include="CommandSystem.Core"
+               HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
+  </ItemGroup>
+
+  <!-- ──────────────── ProjectMER reference (for patching) ──────────────── -->
+  <!--
+    Place ProjectMER.dll next to MerOptimizer.csproj, or adjust the path below.
+    You can download it from: https://github.com/Michal78900/ProjectMER/releases/tag/2025.11.2.1
+  -->
+  <ItemGroup>
+    <Reference Include="ProjectMER"
+               HintPath="$(MSBuildThisFileDirectory)libs\ProjectMER.dll" />
+  </ItemGroup>
+
+  <!-- ──────────────── NuGet packages ──────────────── -->
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.3.6" />
+    <PackageReference Include="Obfuscar" Version="2.2.38">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="Obfuscate" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+    <Message Text="[MerOptimizer] Running Obfuscar obfuscator..." Importance="high" />
+    <Exec Command="&quot;C:\Users\musta\.nuget\packages\obfuscar\2.2.38\tools\Obfuscar.Console.exe&quot; &quot;$(ProjectDir)obfuscar.xml&quot;" />
+    <Copy SourceFiles="$(ProjectDir)bin\Release\net48\Obfuscated\MerOptimizer.dll" DestinationFolder="$(TargetDir)" OverwriteReadOnlyFiles="true" />
+    <Message Text="[MerOptimizer] Obfuscation complete. Protected DLL copied to output." Importance="high" />
+  </Target>
+</Project>
