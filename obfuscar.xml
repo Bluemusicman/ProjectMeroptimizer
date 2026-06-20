@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Obfuscator>
+  <Var name="InPath" value=".\bin\Release\net48" />
+  <Var name="OutPath" value=".\bin\Release\net48\Obfuscated" />
+  <Var name="KeepPublicApi" value="true" />
+  <Var name="HidePrivateApi" value="true" />
+  <Var name="RenameProperties" value="true" />
+  <Var name="RenameEvents" value="true" />
+  <Var name="RenameFields" value="true" />
+  <Var name="UseUnicodeNames" value="true" />
+  <Var name="HideStrings" value="true" />
+  <Var name="OptimizeMethods" value="true" />
+
+  <Module file="$(InPath)\MerOptimizer.dll">
+    <!-- Do not rename the main plugin class and config so LabAPI loader can load it -->
+    <Type name="MerOptimizer.MerOptimizerPlugin" skipProperties="true" skipMethods="true" skipFields="true" />
+    <Type name="MerOptimizer.Config" skipProperties="true" skipMethods="true" skipFields="true" />
+  </Module>
+</Obfuscator>
