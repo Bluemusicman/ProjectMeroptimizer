@@ -4,10 +4,6 @@ using MEC;
 
 namespace MerOptimizer;
 
-/// <summary>
-/// Drives the periodic proximity-culling update loop and handles item pickup lifecycle events.
-/// Uses MEC (More Effective Coroutines) which is bundled with the game assembly.
-/// </summary>
 internal sealed class CullingUpdateHandler : CustomEventsHandler
 {
     private CoroutineHandle _cullHandle;

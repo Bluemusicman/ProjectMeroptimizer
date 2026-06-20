@@ -8,15 +8,6 @@ using LabApi.Loader.Features.Plugins;
 
 namespace MerOptimizer;
 
-/// <summary>
-/// MerOptimizer — ProjectMER (LabAPI) performance plugin.
-///
-/// Optimizations applied:
-///   • Proximity culling   — hides schematic primitives from distant players via Mirror observers.
-///   • Collision stripping — removes Collidable flag from tiny/cosmetic primitives.
-///   • Static forcing      — sets NetworkIsStatic on all non-animated primitives to eliminate sync cost.
-///   • (batched spawning)  — scheduled for a future patch via Harmony on SchematicObject.CreateObject.
-/// </summary>
 public sealed class MerOptimizerPlugin : Plugin<Config>
 {
     public static MerOptimizerPlugin Instance { get; private set; } = null!;
@@ -29,7 +20,6 @@ public sealed class MerOptimizerPlugin : Plugin<Config>
     public override string Author      => "Souin";
     public override Version Version    => new(1, 0, 0, 0);
 
-    // Require LabAPI 1.0+
     public override Version RequiredApiVersion => new(1, 0, 0, 0);
 
     public override void Enable()

@@ -5,19 +5,12 @@ using UnityEngine;
 
 namespace MerOptimizer;
 
-/// <summary>
-/// Core proximity-based visibility manager.
-/// Iterates over all spawned schematic network objects, standalone toys, and dropped items (pickups)
-/// each update cycle and uses Mirror's ShowForConnection / HideForConnection pattern
-/// to show or hide them per connected player based on distance.
-/// </summary>
 internal static class ProximityCullingManager
 {
     private static readonly List<SchematicCullingTracker> _schematics = [];
     private static readonly HashSet<NetworkIdentity> _standaloneToys = [];
     private static readonly HashSet<NetworkIdentity> _pickups = [];
 
-    // Tracks which (connection, netId) pairs are currently VISIBLE.
     private static readonly Dictionary<NetworkConnection, HashSet<uint>> _visibleFor = [];
 
     private static readonly Action<NetworkIdentity, NetworkConnection> ShowForConnectionDelegate;
@@ -88,10 +81,6 @@ internal static class ProximityCullingManager
         _visibleFor.Clear();
     }
 
-    /// <summary>
-    /// Called periodically from the update coroutine.
-    /// Shows / hides objects per player connection based on distance.
-    /// </summary>
     public static void RunCullCycle(float cullDistance)
     {
         Config cfg = MerOptimizerPlugin.Instance.Config;
@@ -101,7 +90,6 @@ internal static class ProximityCullingManager
         float sqrCull = cullDistance * cullDistance;
         float sqrPickupCull = cfg.PickupCullDistance * cfg.PickupCullDistance;
 
-        // Snapshot of active connections
         foreach (NetworkConnectionToClient conn in NetworkServer.connections.Values)
         {
             if (conn?.identity == null) continue;
@@ -114,7 +102,6 @@ internal static class ProximityCullingManager
                 _visibleFor[conn] = visible;
             }
 
-            // 1. Cull Schematic blocks
             if (cfg.EnableProximityCulling && _schematics.Count > 0)
             {
                 foreach (SchematicCullingTracker schematic in _schematics)
@@ -132,7 +119,6 @@ internal static class ProximityCullingManager
                 }
             }
 
-            // 2. Cull Standalone Toys
             if (cfg.EnableStandaloneToyCulling && _standaloneToys.Count > 0)
             {
                 foreach (NetworkIdentity netId in _standaloneToys)
@@ -144,7 +130,6 @@ internal static class ProximityCullingManager
                 }
             }
 
-            // 3. Cull Pickups (dropped items)
             if (cfg.EnablePickupCulling && _pickups.Count > 0)
             {
                 foreach (NetworkIdentity netId in _pickups)
@@ -157,7 +142,6 @@ internal static class ProximityCullingManager
             }
         }
 
-        // Clean up disconnected connections
         List<NetworkConnection> dead = _visibleFor.Keys
             .Where(c => c == null || !NetworkServer.connections.ContainsValue(c as NetworkConnectionToClient))
             .ToList();
