@@ -1,16 +1,16 @@
 using LabApi.Events.Arguments.ServerEvents;
 using LabApi.Events.CustomHandlers;
-using UnityEngine;
+using MEC;
 
 namespace MerOptimizer;
 
 /// <summary>
 /// Drives the periodic proximity-culling update loop and handles item pickup lifecycle events.
-/// Uses a plain Unity Coroutine (WaitForSeconds) so there is no MEC dependency.
+/// Uses MEC (More Effective Coroutines) which is bundled with the game assembly.
 /// </summary>
 internal sealed class CullingUpdateHandler : CustomEventsHandler
 {
-    private CullingRunner? _runner;
+    private CoroutineHandle _cullHandle;
     private readonly Config _cfg;
 
     public CullingUpdateHandler(Config cfg) => _cfg = cfg;
@@ -47,53 +47,27 @@ internal sealed class CullingUpdateHandler : CustomEventsHandler
             ProximityCullingManager.UnregisterPickup(ev.Pickup.NetworkIdentity);
     }
 
-    // ── Coroutine Driver Lifecycle ───────────────────────────────────────────
+    // ── MEC Coroutine Lifecycle ──────────────────────────────────────────────
 
     private void StartLoop()
     {
         StopLoop();
-
-        // Create a persistent GameObject that runs the coroutine.
-        GameObject go = new("[MerOptimizer] CullingRunner");
-        UnityEngine.Object.DontDestroyOnLoad(go);
-        _runner = go.AddComponent<CullingRunner>();
-        _runner.Begin(_cfg.CullUpdateInterval, _cfg.CullDistance);
+        _cullHandle = Timing.RunCoroutine(CullCoroutine());
     }
 
     private void StopLoop()
     {
-        if (_runner != null)
-        {
-            UnityEngine.Object.Destroy(_runner.gameObject);
-            _runner = null;
-        }
-    }
-}
-
-/// <summary>
-/// MonoBehaviour that hosts the cull coroutine.
-/// </summary>
-internal sealed class CullingRunner : MonoBehaviour
-{
-    private float _interval;
-    private float _distance;
-
-    public void Begin(float interval, float distance)
-    {
-        _interval = interval;
-        _distance = distance;
-        StartCoroutine(CullCoroutine());
+        Timing.KillCoroutines(_cullHandle);
     }
 
-    private System.Collections.IEnumerator CullCoroutine()
+    private IEnumerator<float> CullCoroutine()
     {
-        var wait = new WaitForSeconds(_interval);
         while (true)
         {
-            yield return wait;
+            yield return Timing.WaitForSeconds(_cfg.CullUpdateInterval);
             try
             {
-                ProximityCullingManager.RunCullCycle(_distance);
+                ProximityCullingManager.RunCullCycle(_cfg.CullDistance);
             }
             catch (Exception ex)
             {
