@@ -36,8 +36,6 @@ internal static class ProximityCullingManager
         HideForConnectionDelegate = (Action<NetworkIdentity, NetworkConnection>)Delegate.CreateDelegate(typeof(Action<NetworkIdentity, NetworkConnection>), hideMethod);
     }
 
-    // ── Schematic Registration ───────────────────────────────────────────────
-
     public static void Register(SchematicCullingTracker tracker) => _schematics.Add(tracker);
 
     public static void Unregister(SchematicCullingTracker tracker)
@@ -49,8 +47,6 @@ internal static class ProximityCullingManager
                 set.Remove(netId);
         }
     }
-
-    // ── Standalone Toy Registration ──────────────────────────────────────────
 
     public static void RegisterStandaloneToy(NetworkIdentity netId)
     {
@@ -68,8 +64,6 @@ internal static class ProximityCullingManager
         }
     }
 
-    // ── Pickup Registration ──────────────────────────────────────────────────
-
     public static void RegisterPickup(NetworkIdentity netId)
     {
         if (netId != null)
@@ -86,8 +80,6 @@ internal static class ProximityCullingManager
         }
     }
 
-    // ── Cleanup ──────────────────────────────────────────────────────────────
-
     public static void Clear()
     {
         _schematics.Clear();
@@ -95,8 +87,6 @@ internal static class ProximityCullingManager
         _pickups.Clear();
         _visibleFor.Clear();
     }
-
-    // ── Periodic Update Cycle ────────────────────────────────────────────────
 
     /// <summary>
     /// Called periodically from the update coroutine.
@@ -190,8 +180,6 @@ internal static class ProximityCullingManager
             visible.Remove(netId.netId);
         }
     }
-
-    // ── Mirror low-level visibility helpers ──────────────────────────────────
 
     private static void ShowForConnection(NetworkConnectionToClient conn, NetworkIdentity identity)
     {

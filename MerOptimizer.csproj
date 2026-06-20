@@ -30,6 +30,8 @@
                HintPath="$(SL_REFERENCES)\Mirror.dll" />
     <Reference Include="Assembly-CSharp"
                HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
+    <Reference Include="Assembly-CSharp-firstpass"
+               HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" />
     <Reference Include="LabApi"
                HintPath="$(SL_REFERENCES)\LabApi.dll" />
     <Reference Include="YamlDotNet"

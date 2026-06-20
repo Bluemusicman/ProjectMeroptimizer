@@ -33,8 +33,6 @@ internal sealed class CullingUpdateHandler : CustomEventsHandler
         ProximityCullingManager.Clear();
     }
 
-    // ── Item Pickup Events ───────────────────────────────────────────────────
-
     public override void OnServerPickupCreated(PickupCreatedEventArgs ev)
     {
         if (_cfg.EnablePickupCulling && ev?.Pickup?.NetworkIdentity != null)
@@ -46,8 +44,6 @@ internal sealed class CullingUpdateHandler : CustomEventsHandler
         if (_cfg.EnablePickupCulling && ev?.Pickup?.NetworkIdentity != null)
             ProximityCullingManager.UnregisterPickup(ev.Pickup.NetworkIdentity);
     }
-
-    // ── MEC Coroutine Lifecycle ──────────────────────────────────────────────
 
     private void StartLoop()
     {
