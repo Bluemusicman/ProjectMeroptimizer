@@ -1,4 +1,4 @@
-# MerOptimizer
+# PMerOptimizer
 
 **Server-side performance optimization plugin for SCP: Secret Laboratory servers using [ProjectMER](https://github.com/Michal78900/MapEditorReborn) schematics.**
 
@@ -8,7 +8,7 @@ Built for [LabAPI](https://github.com/northwood-studios/LabAPI) · Author: **Sou
 
 ## Overview
 
-MerOptimizer is a server-side optimization plugin designed to eliminate the massive FPS drops and server lag caused by large ProjectMER schematics (7MB+, thousands of parts). On heavy schematic servers, player FPS typically sits around **20–40**. With MerOptimizer, it jumps to **60+ FPS** — without any client-side mods.
+PMerOptimizer is a server-side optimization plugin designed to eliminate the massive FPS drops and server lag caused by large ProjectMER schematics (7MB+, thousands of parts). On heavy schematic servers, player FPS typically sits around **20–40**. With PMerOptimizer, it jumps to **60+ FPS** — without any client-side mods.
 
 ---
 
@@ -40,7 +40,7 @@ Flags all non-animated, stationary decorative objects as **network-static**.
 
 ## Benefits
 
-| Area | Without MerOptimizer | With MerOptimizer |
+| Area | Without PMerOptimizer | With PMerOptimizer |
 |------|---------------------|-------------------|
 | **Player FPS** | 20–40 FPS (heavy drops) | 60+ FPS (stable) |
 | **Server TPS** | Degraded under load | Healthy & stable |
@@ -53,7 +53,7 @@ Flags all non-animated, stationary decorative objects as **network-static**.
 ## Installation
 
 1. Make sure you have **LabAPI** and **ProjectMER** installed on your SCP:SL server.
-2. Download the latest `MerOptimizer.dll` from the [Releases](https://github.com/your-repo/releases) page.
+2. Download the latest `PMerOptimizer.dll` from the [Releases](https://github.com/your-repo/releases) page.
 3. Place the DLL into your server's `LabAPI/Plugins` folder.
 4. Restart the server. A default configuration file will be generated automatically.
 
@@ -75,7 +75,7 @@ Flags all non-animated, stationary decorative objects as **network-static**.
 
 ## Code Protection
 
-MerOptimizer is fully **obfuscated** using industry-standard techniques:
+PMerOptimizer is fully **obfuscated** using industry-standard techniques:
 
 - All internal class and method names are **scrambled**
 - String literals are **encrypted**
